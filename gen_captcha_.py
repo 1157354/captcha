@@ -1,5 +1,6 @@
 __author__ = 'tian'
-from captcha.image import ImageCaptcha
+#from captcha.image import ImageCaptcha
+from captcha_class import ImageCaptcha
 
 #import captcha
 import random
@@ -20,14 +21,14 @@ def random_captcha_text(char_set=number + alphabet + ALPHABET, captcha_size=5):
 
 # 生成字符对应的验证码
 def gen_captcha_text_and_image():
-    image = ImageCaptcha(width=80,height=23,font_sizes=(23,26,28))
+    image = ImageCaptcha(width=80,height=23,font_size=(23,26,28))
 
 
     captcha_text = random_captcha_text()
     captcha_text = ''.join(captcha_text)
 
     captcha = image.generate(captcha_text)
-    #image.write(captcha_text, captcha_text + '.jpg')  # 写到文件
+    image.write(captcha_text, captcha_text + '.jpg')  # 写到文件
 
 
     captcha_image = Image.open(captcha)
