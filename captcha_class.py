@@ -64,7 +64,7 @@ class ImageCaptcha(_Captcha):
 
 
     @staticmethod
-    def create_noise_dots(image, color, width=3, number=5):
+    def create_noise_dots(image, color, width=2, number=5):
         draw = Draw(image)
         w, h = image.size
         while number:
@@ -92,9 +92,8 @@ class ImageCaptcha(_Captcha):
         draw = Draw(image)
 
         def _draw_character(c):
-            font = ImageFont.truetype('OpenSans-Italic.ttf',23)
+            font = ImageFont.truetype('OpenSans-Italic.ttf',17)
             w, h = draw.textsize(c, font=font)
-
             dx = random.randint(0, 4)
             dy = random.randint(0, 6)
             im = Image.new('RGBA', (w + dx, h + dy))
@@ -102,11 +101,11 @@ class ImageCaptcha(_Captcha):
 
             # rotate
             im = im.crop(im.getbbox())
-            im = im.rotate(random.uniform(-30, 30), Image.BILINEAR, expand=1)
+            im = im.rotate(random.uniform(-10, 10), Image.BILINEAR, expand=1)
 
             # warp
-            dx = w * random.uniform(0.1, 0.3)
-            dy = h * random.uniform(0.2, 0.3)
+            dx = w * random.uniform(0.002, 0.004)
+            dy = h * random.uniform(0.002, 0.004)
             x1 = int(random.uniform(-dx, dx))
             y1 = int(random.uniform(-dy, dy))
             x2 = int(random.uniform(-dx, dx))
@@ -133,11 +132,12 @@ class ImageCaptcha(_Captcha):
         image = image.resize((width, self._height))
 
         average = int(text_width / len(chars))
-        rand = int(0.25 * average)
-        offset = int(average * 0.1)
+        rand = int(0.1 * average)
+        offset = int(average*1.15)
 
         for im in images:
             w, h = im.size
+
             mask = im.convert('L').point(table)
             image.paste(im, (offset, int((self._height - h) / 2)), mask)
             offset = offset + w + random.randint(-rand, 0)
@@ -153,9 +153,12 @@ class ImageCaptcha(_Captcha):
         """
         background = self.random_color(238, 255)
         color = self.random_color(10, 200, random.randint(220, 255))
+        color_dot = self.random_color(20,100,random.randint(200,255))
+        color_curve = self.random_color(30,90,random.randint(180,220))
         im = self.create_captcha_image(chars, color, background)
-        self.create_noise_dots(im, color)
-        self.create_noise_curve(im, color)
+        #im = self.create_captcha_image(chars, (255,255,0), background)
+        self.create_noise_dots(im, color_dot)
+        self.create_noise_curve(im, color_curve)
         im = im.filter(ImageFilter.SMOOTH)
         return im
 

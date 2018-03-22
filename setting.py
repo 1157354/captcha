@@ -1,3 +1,4 @@
+__author__ = 'tian'
 import numpy as np
 import tensorflow as tf
 
@@ -10,7 +11,7 @@ ALPHABET = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N'
 IMAGE_HEIGHT = 23
 IMAGE_WIDTH = 80
 MAX_CAPTCHA = 5
-char_set = number + alphabet + ALPHABET + ['_']
+char_set = number + alphabet + ALPHABET
 CHAR_SET_LEN = len(char_set)
 
 X = tf.placeholder(tf.float32, [None, IMAGE_HEIGHT * IMAGE_WIDTH])
@@ -30,14 +31,11 @@ def convert2gray(img):
 def text2vec(text):
     text_len = len(text)
     if text_len > MAX_CAPTCHA:
-        raise ValueError('验证码最长4个字符')
+        raise ValueError('验证码最长5个字符')
 
     vector = np.zeros(MAX_CAPTCHA * CHAR_SET_LEN)
 
     def char2pos(c):
-        if c == '_':
-            k = 62
-            return k
         k = ord(c) - 48
         if k > 9:
             k = ord(c) - 55

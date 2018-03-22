@@ -1,3 +1,4 @@
+__author__ = 'tian'
 from gen_captcha_ import gen_captcha_text_and_image
 from setting import convert2gray
 from setting import MAX_CAPTCHA, CHAR_SET_LEN, vec2text, X, keep_prob
@@ -56,7 +57,3 @@ def batch_hack_captcha():
 if __name__ == '__main__':
     batch_hack_captcha()
     print('end...')
-
-
-
-
